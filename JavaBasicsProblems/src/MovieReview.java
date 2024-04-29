@@ -9,7 +9,7 @@ class Movie{
     public String title;
     public String director;
     public ArrayList<String> actors;
-    public ArrayList<String> reviews;
+    private ArrayList<Review> reviews;
 
     public Movie(String title, String director, ArrayList<String> actors){
         this.title = title;
@@ -18,42 +18,30 @@ class Movie{
         this.reviews= new ArrayList<>();
     }
 
-    public void addReview(String review){
+    public void addReview(Review review){
         this.reviews.add(review);
     }
 
-    public ArrayList<String> getReviews(){
+    public ArrayList<Review> getReviews(){
         return this.reviews;
+    }
+}
+
+class Review {
+    private String reviewer;
+    private int rating;
+    private String comments;
+
+    public Review(String reviewer, int rating, String comments) {
+        this.reviewer = reviewer;
+        this.rating = rating;
+        this.comments = comments;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Movie Title: ").append(title).append("\n");
-        sb.append("Director: ").append(director).append("\n");
-
-        // Append actors
-        sb.append("Actors: ");
-        for (String actor : actors) {
-            sb.append(actor).append(", ");
-        }
-        if (!actors.isEmpty()) {
-            sb.delete(sb.length() - 2, sb.length()); // Remove the last comma and space
-        }
-        sb.append("\n");
-
-        // Append reviews
-        sb.append("Reviews: ");
-        for (String review : reviews) {
-            sb.append(review).append(", ");
-        }
-        if (!reviews.isEmpty()) {
-            sb.delete(sb.length() - 2, sb.length()); // Remove the last comma and space
-        }
-
-        return sb.toString();
+        return "Reviewer: " + reviewer + ", Rating: " + rating + ", Comments: " + comments;
     }
-
 }
 
 public class MovieReview{
@@ -64,25 +52,37 @@ public class MovieReview{
         Movie Detachment = new Movie(
                 "Detachment",
                 "Tony Kaye",
-                new ArrayList<String>(detachmentActors){});
+                new ArrayList<>(detachmentActors) {
+                });
 
-        Detachment.addReview("Very insightFull movie about the childrens life");
-        System.out.println(Detachment.getReviews());
+        Review review = new Review("Tejas Kale", 5, "Very insightful movie about children's lives");
+        Detachment.addReview(review);
+        displayMovieDetails(Detachment);
+    }
 
-        System.out.println("\n\nAbout Movie: \n" + Detachment.toString());
+    public static void displayMovieDetails(Movie movie) {
+        System.out.println("\n\nAbout Movie: ");
+        System.out.println("Movie Title: " + movie.title);
+        System.out.println("Director: " + movie.director);
+        System.out.print("Actors: ");
+        for (String actor : movie.actors) {
+            System.out.print(actor + ", ");
+        }
+        System.out.println("\nReviews: ");
+        for (Review review : movie.getReviews()) {
+            System.out.println(review);
+        }
     }
 }
 
 /*
 ======OUTPUT======
-[Very insightFull movie about the childrens life]
-
-
 About Movie:
 Movie Title: Detachment
 Director: Tony Kaye
-Actors: Adrien Brody, Christina Hendricks
-Reviews: Very insightFull movie about the childrens life
+Actors: Adrien Brody, Christina Hendricks,
+Reviews:
+Reviewer: Tejas Kale, Rating: 5, Comments: Very insightful movie about children's lives
 
 Process finished with exit code 0
  */
